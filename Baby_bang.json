@@ -1,0 +1,164 @@
+// Pinscape Pico Configuration - Starter Template
+// Copyright 2024, 2025 Michael J Roberts / BSD-3-Clause license / NO WARRANTY
+//
+
+{
+    // ---------------------------------------------------------------------
+    //
+    // Basic device setup
+    //
+
+    // Unit identification
+    id: {
+        unitNum: 1,
+        unitName: "Little Bang",
+        ledWizUnitNum: 0,
+    },
+    serialPorts: {
+
+       
+        usb: {
+            logging: true,       // enable logging on this port
+            console: {
+                enable: true,    // enable the interactive command line on this port
+                bufSize: 2048,   // buffer size for console output
+            },
+        },
+    },
+
+     logging: {
+        filter: "error warning info config",
+        bufSize: 8192,
+        timestamps: true,
+        typeCodes: true,
+        colors: true,
+    },
+ 
+    keyboard: {
+        enable: true,
+    },
+
+nudge: {
+        source: "lis3dh",
+        x: "+X",
+        y: "+Y",
+        z: "+Z",
+       },
+    gamepad: {
+        enable: true,       // enable the gamepad emulation
+        x: "nudge.x",       // connect the accelerometer X axis to the joystick X axis
+        y: "nudge.y",       // ditto for the Y axis
+        z: "plunger.z",     // connect the plunger position reading to the joystick Z axis
+
+        },
+
+    openPinballDevice: {
+        enable: true,
+    },
+    
+buttons: [
+        // IN-1
+        { 
+            source: { type: "gpio", gp: 0, active: "high", pull: true },
+            action: { type: "key", key: "left shift" }, // VP left flipper
+        },
+
+        // IN-2
+        { 
+            source: { type: "gpio", gp: 1, active: "high", pull: true },
+            action: { type: "key", key: "right shift" }, // VP right flipper
+        },
+
+        // IN-3
+        { 
+            source: { type: "gpio", gp: 2, active: "high", pull: true },
+            action: { type: "key", key: "left ctrl" }, // VP left magnasave
+        },
+
+        // IN-4
+        { 
+            source: { type: "gpio", gp: 3, active: "high", pull: true },
+            action: { type: "key", key: "right ctrl" }, // VP right magnasave
+        },
+
+        // IN-5
+        { 
+            source: { type: "gpio", gp: 6, active: "high", pull: true },
+            action: { type: "key", key: "1" }, // VP Start
+        },
+
+        // IN-6
+        { 
+            source: { type: "gpio", gp: 7, active: "high", pull: true },
+            action: { type: "key", key: "esc" }, // VP quit/exit
+        },
+
+        // IN-7
+        { 
+            source: { type: "gpio", gp: 8, active: "high", pull: true },
+            action: { type: "key", key: "2" },  // VP extra ball
+        },
+
+        // IN-8
+        { 
+            source: { type: "gpio", gp: 9, active: "high", pull: true },
+            action: { type: "key", key: "3" },  // VP Coin 1
+        },
+
+        // IN-9
+        { 
+            source: { type: "gpio", gp: 10, active: "high", pull: true },
+            action: { type: "key", key: "4" }, // VP Coin 2
+        },
+
+        // IN-10
+        { 
+            source: { type: "gpio", gp: 11, active: "high", pull: true },
+            action: { type: "key", key: "5" }, // VP Coin 3
+        },
+
+        // IN-11
+        { 
+            source: { type: "gpio", gp: 12, active: "high", pull: true },
+            action: { type: "key", key: "end" }, // VP Coin door switch
+        },
+    ],
+    
+    // LIS3DH I2C accelerometer
+    //
+     lis3dh: {
+         i2c: 0,            // I2C bus - 0 for I2C0, 1 for I2C1
+         addr: 0x19,        // I2C address: 0x18 if SDO/SA0 is wired to GND, 0x19 if wired to 3.3V
+       //  interrupt: 22,     // GPIO port connected to interrupt pin; omit this line if interrupt line isn't wired
+         gRange: 2,         // dynamic range +/- 2g
+     },
+
+     plunger: {
+         source: "pico_adc",   // source sensor type; usually inferred automatically from available sensors
+         autoZero: true,       // enable auto-zeroing; only applies to quadrature sensors, ignored otherwise
+         autoZeroTime: 5000,   // time in milliseconds for auto-zeroing; plunger must be stationary this long to auto-zero
+    //     powerLaw: 2,          // power-law exponent in brightness-to-distance calculation, only for VCNL4010
+     },
+    
+     pico_adc: {
+         gpio: 28,
+     },
+
+    //
+    // I2C0
+    //   SDA must be one of GPIO 0, 4, 8, 12, 16, or 20
+    //   SCL must be one of GPIO 1, 5, 9, 13, 17, or 21
+    //
+    // I2C1
+    //   SDA must be one of GPIO 2, 6, 10, 14, 18, or 26
+    //   SCL must be one of GPIO 3, 7, 11, 15, 19, or 27
+    //
+     i2c0: {
+         sda: 4,           // GPIO port of I2C0 SDA (serial data) connection
+         scl: 5,           // GPIO port of I2C0 SCL (serial clock) connection
+         speed: 500000,    // bus speed, bits per second
+     },
+    
+}
+
+
